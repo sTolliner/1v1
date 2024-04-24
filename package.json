@@ -1,0 +1,24 @@
+{
+  "name": "tictactoe",
+  "version": "1.0.0",
+  "description": "tictactoe game labb",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sTolliner/1v1.git"
+  },
+  "author": "William, Samuel, Anton",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sTolliner/1v1/issues"
+  },
+  "homepage": "https://github.com/sTolliner/1v1#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "express": "^4.19.2",
+    "jsdom": "^24.0.0"
+  }
+}
