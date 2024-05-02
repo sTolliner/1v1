@@ -28,22 +28,27 @@ app.post("/", function(request, response) {
 
         console.log(request.body);
         if(globalObject.playerOneNick===undefined){
+            console.log("nickname är undefined");
             throw new Error('Nickname saknas!');
         }
 
         if(globalObject.playerOneColor===undefined){
+            console.log("färg är undefined");
             throw new Error('Färg saknas!');
         }
         
         if(globalObject.playerOneNick.value.length < 3) {
+            console.log("nickname är för kort");
             throw new Error("Nickname skall vara minst tre tecken långt");
         }
 
         if (globalObject.playerOneColor.value.length !== 7 ) {
+            console.log("färg är måste ha 7 tecken");
             throw new Error("Färg skall innehålla sju tecken");
         }
 
-        if (globalObject.playerONeColor.value === '#000000' || globalObject.playerONeColor.value === '#ffffff'){
+        if (globalObject.playerOneColor.value === '#000000' || globalObject.playerOneColor.value === '#ffffff'){
+            console.log("färg får inte vara svart eller vit");
             throw new Error("Ogiltig färg!");
         }
 
