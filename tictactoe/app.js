@@ -1,11 +1,11 @@
 'use strict';
 
 //Filen app.js är den enda ni skall och tillåts skriva kod i.
-const globalObject = require('/servermodules/game-modul.js');
+const globalObject = require("./servermodules/game-modul.js");
 const fs = require('fs');
 const express = require('express');
 const jsDOM = require('jsdom');
-const cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser');
 
 let app = express();
 
@@ -31,13 +31,24 @@ app.post("/", function(request, response) {
             throw new Error('Nickname saknas!');
         }
 
-        if(globalObject.PlayerOneColor===undefined){
+        if(globalObject.playerOneColor===undefined){
             throw new Error('Färg saknas!');
         }
+        
+        if(globalObject.playerOneNick.value.length < 3) {
+            throw new Error("Nickname skall vara minst tre tecken långt");
+        }
+
+        if (globalObject.playerOneColor.value.length !== 7 ) {
+            throw new Error("Färg skall innehålla sju tecken");
+        }
+
+        
 
     }catch(oError) {
-        response.send(oError.message)
+        response.send(oError.message);
     }
 });
 
 
+ 
