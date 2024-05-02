@@ -43,7 +43,9 @@ app.post("/", function(request, response) {
             throw new Error("Färg skall innehålla sju tecken");
         }
 
-        
+        if (globalObject.playerONeColor.value === '#000000' || globalObject.playerONeColor.value === '#ffffff'){
+            throw new Error("Ogiltig färg!");
+        }
 
     }catch(oError) {
         response.send(oError.message);
