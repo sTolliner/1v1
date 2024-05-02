@@ -24,7 +24,20 @@ app.get("/reset", function(request, response) {
 });
 
 app.post("/", function(request, response) {
+    try{
 
+        console.log(request.body);
+        if(globalObject.playerOneNick===undefined){
+            throw new Error('Nickname saknas!');
+        }
+
+        if(globalObject.PlayerOneColor===undefined){
+            throw new Error('Färg saknas!');
+        }
+
+    }catch(oError) {
+        response.send(oError.message)
+    }
 });
 
 
