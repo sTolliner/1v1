@@ -11,5 +11,20 @@ let app = express();
 
 app.listen(3000, function () {
     console.log(":3")
-} );
+});
 app.use("/static", express.static(__dirname + "/static"));
+app.use(express.urlencoded({ extended: true }));
+
+app.get("/", function(request, response) {
+
+});
+
+app.get("/reset", function(request, response) {
+
+});
+
+app.post("/", function(request, response) {
+
+});
+
+
