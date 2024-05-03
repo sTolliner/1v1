@@ -19,11 +19,7 @@ app.use(cookieParser('secret'));
 app.get("/", function (request, response) {
 
     if(request.cookies.nickName !== undefined || request.cookies.color !== undefined){
-<<<<<<< Updated upstream
-        fs.readFile(__dirname + 'static/html/index.html', function(err, data){
-=======
         response.sendFile(__dirname + '/static/html/index.html', function(err, data){
->>>>>>> Stashed changes
             if( err ) {
                 console.log( err );
                 request.send( err );
