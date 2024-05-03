@@ -17,14 +17,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('secret'));
 
 app.get("/", function (request, response) {
-    response.sendFile(__dirname + '/static/html/loggain.html', function(err) {
-        if( err ) {
-            console.log( err );
-            request.send( err );
-        } else {
-            console.log('Allt ok!');
-        }
-    });
 
     if(response.cookies.nickName !== undefined || response.cookies.color !== undefined){
         fs.readFile(__dirname + 'static/html/index.html', function(err, data){
