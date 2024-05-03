@@ -18,7 +18,7 @@ app.use(cookieParser('secret'));
 
 app.get("/", function (request, response) {
 
-    if(response.cookies.nickName !== undefined || response.cookies.color !== undefined){
+    if(request.cookies.nickName !== undefined || request.cookies.color !== undefined){
         fs.readFile(__dirname + 'static/html/index.html', function(err, data){
             if( err ) {
                 console.log( err );
