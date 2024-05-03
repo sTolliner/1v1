@@ -39,12 +39,12 @@ app.post("/", function (request, response) {
 
         console.log(request.body);
 
-        if (nick1 === undefined) {
+        if (nick1 === "") {
             console.log("nickname är undefined");
             throw new Error('Nickname saknas!');
         }
 
-        if (color1 === undefined) {
+        if (color1 === "") {
             console.log("färg är undefined");
             throw new Error('Färg saknas!');
         }
@@ -54,7 +54,7 @@ app.post("/", function (request, response) {
             throw new Error("Nickname skall vara minst tre tecken långt");
         }
         
-        if (color1 !== 7) {
+        if (color1.length !== 7) {
             console.log("färg är måste ha 7 tecken");
             throw new Error("Färg skall innehålla sju tecken");
         }
