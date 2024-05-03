@@ -84,6 +84,25 @@ app.post("/", function (request, response) {
     } 
     catch (oError) {
         response.send(oError.message);
+        fs.readFile(__dirname + 'static/html/loggain.html', function(err, data){
+            if(err){
+                console.log( err );
+                response.send( err );
+            }else{
+                let serverDOM = new jsDOM.JSDOM( data );
+
+                if(request.body.nick_1 !== undefined){
+                    serverDOM.window.document.querySelector('#nick_1').setAttribute('value', nick1);
+                }
+                if(request.body.color_1 !== undefined){
+                    serverDOM.window.document.querySelector('#color_1').setAttribute('value', nick1);
+                }
+
+                serverDOM.window.document.querySelector('#errorMsg').textContent = oError.message;
+                data = serverDOM.serialize;
+                response.send(data);
+            }
+        })
     }
 
 });
