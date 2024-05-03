@@ -14,7 +14,7 @@ app.listen(3000, function () {
 });
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser);
+app.use(cookieParser('secret'));
 
 app.get("/", function (request, response) {
     response.sendFile(__dirname + '/static/html/loggain.html', function(err) {
@@ -77,8 +77,8 @@ app.post("/", function (request, response) {
             throw new Error('Färg redan tagen!');
         }
 
-        response.cookie('nickName', nick_1, {maxAge:1000*60*60*2, signed:true});
-        response.cookie('color', color_1_1, {maxAge:1000*60*60*2, signed:true});
+        response.cookie('nickName', nick1, {maxAge:1000*60*60*2, signed:true});
+        response.cookie('color', color1, {maxAge:1000*60*60*2, signed:true});
         response.redirect('/');
 
     } 
