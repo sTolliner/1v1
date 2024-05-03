@@ -25,10 +25,38 @@ app.get("/", function (request, response) {
             console.log('Allt ok!');
         }
     });
+
+    if(response.cookies.nickName !== undefined || response.cookies.color !== undefined){
+        fs.readFile(__dirname + 'static/html/index.html', function(err, data){
+            if( err ) {
+                console.log( err );
+                request.send( err );
+            } else {
+                console.log('Allt ok!');
+            }
+        });
+    }else{
+        response.sendFile(__dirname + '/static/html/loggain.html', function(err) {
+            if( err ) {
+                console.log( err );
+                request.send( err );
+            } else {
+                console.log('Allt ok!');
+            }
+        });
+    }
 });
 
 app.get("/reset", function (request, response) {
+    console.log(request.cookies);
 
+    if( request.cookies.nickName !== undefined && request.cookies.color !== undefined) {
+
+            response.clearCookie('nickName');
+            response.clearCookie('color');
+    } 
+
+    response.redirect('/');
 });
 
 app.post("/", function (request, response) {
@@ -83,7 +111,6 @@ app.post("/", function (request, response) {
 
     } 
     catch (oError) {
-        response.send(oError.message);
         fs.readFile(__dirname + 'static/html/loggain.html', function(err, data){
             if(err){
                 console.log( err );
