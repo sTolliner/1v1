@@ -73,7 +73,10 @@ app.post("/", function (request, response) {
 
     try{
         if(nick1 === globalObject.playerTwoNick){
-            throw new Error('Nickname redan taget!')
+            throw new Error('Nickname redan taget!');
+    }
+    if(color1 === globalObject.playerTwoColor){
+        throw new Error('Färg redan tagen!');
     }
     } catch (oError) {
         response.send(oError.message);
