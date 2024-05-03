@@ -67,6 +67,18 @@ app.post("/", function (request, response) {
     } catch (oError) {
         response.send(oError.message);
     }
+
+    globalObject.playerOneNick = nick1;
+    globalObject.playerOneColor = color1;
+
+    try{
+        if(nick1 === globalObject.playerTwoNick){
+            throw new Error('Nickname redan taget!')
+    }
+    } catch (oError) {
+        response.send(oError.message);
+    }
+
 });
 
 
