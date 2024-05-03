@@ -19,7 +19,11 @@ app.use(cookieParser('secret'));
 app.get("/", function (request, response) {
 
     if(request.cookies.nickName !== undefined || request.cookies.color !== undefined){
+<<<<<<< Updated upstream
         fs.readFile(__dirname + 'static/html/index.html', function(err, data){
+=======
+        response.sendFile(__dirname + '/static/html/index.html', function(err, data){
+>>>>>>> Stashed changes
             if( err ) {
                 console.log( err );
                 request.send( err );
@@ -89,13 +93,13 @@ app.post("/", function (request, response) {
         globalObject.playerOneColor = color1;
 
         
-        if(nick1 === globalObject.playerTwoNick){
+        if(globalObject.playerTwoNick === globalObject.playerOneNick){
                 throw new Error('Nickname redan taget!');
         }
 
-        if(color1 === globalObject.playerTwoColor){
+        if(globalObject.playerTwoColor === globalObject.playerOneColor){
             throw new Error('Färg redan tagen!');
-        }
+        } 
 
         response.cookie('nickName', nick1, {maxAge:1000*60*60*2, signed:true});
         response.cookie('color', color1, {maxAge:1000*60*60*2, signed:true});
@@ -103,7 +107,7 @@ app.post("/", function (request, response) {
 
     } 
     catch (oError) {
-        fs.readFile(__dirname + 'static/html/loggain.html', function(err, data){
+        fs.readFile(__dirname + '/static/html/loggain.html', function(err, data){
             if(err){
                 console.log( err );
                 response.send( err );
@@ -111,14 +115,14 @@ app.post("/", function (request, response) {
                 let serverDOM = new jsDOM.JSDOM( data );
 
                 if(request.body.nick_1 !== undefined){
-                    serverDOM.window.document.querySelector('#nick_1').setAttribute('value', nick1);
+                    serverDOM.window.document.querySelector('#nick_1').setAttribute('value', request.body.nick_1);
                 }
                 if(request.body.color_1 !== undefined){
-                    serverDOM.window.document.querySelector('#color_1').setAttribute('value', nick1);
+                    serverDOM.window.document.querySelector('#color_1').setAttribute('value', request.body.color_1);
                 }
 
                 serverDOM.window.document.querySelector('#errorMsg').textContent = oError.message;
-                data = serverDOM.serialize;
+                data = serverDOM.serialize();
                 response.send(data);
             }
         })
