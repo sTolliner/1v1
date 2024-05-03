@@ -53,13 +53,13 @@ app.post("/", function (request, response) {
             console.log("nickname är för kort");
             throw new Error("Nickname skall vara minst tre tecken långt");
         }
-
-        if (color1.value.length !== 7) {
+        
+        if (color1 !== 7) {
             console.log("färg är måste ha 7 tecken");
             throw new Error("Färg skall innehålla sju tecken");
         }
 
-        if (color1.value === '#000000' || color1.value === '#ffffff') {
+        if (color1 === '#000000' || color1 === '#ffffff') {
             console.log("färg får inte vara svart eller vit");
             throw new Error("Ogiltig färg!");
         }
