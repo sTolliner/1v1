@@ -10,52 +10,63 @@ const cookieParser = require('cookie-parser');
 let app = express();
 
 app.listen(3000, function () {
-    console.log(":3")
+    console.log(":3");
 });
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", function(request, response) {
+app.get("/", function (request, response) {
+    response.sendFile(__dirname + '/static/html/loggain.html', function(err) {
+        if( err ) {
+            console.log( err );
+            request.send( err );
+        } else {
+            console.log('Allt ok!');
+        }
+    });
+});
+
+app.get("/reset", function (request, response) {
 
 });
 
-app.get("/reset", function(request, response) {
+app.post("/", function (request, response) {
+    try {
 
-});
 
-app.post("/", function(request, response) {
-    try{
+        let nick1 = request.body.nick_1;
+        let color1 = request.body.color_1;
 
         console.log(request.body);
-        if(globalObject.playerOneNick===undefined){
+
+        if (nick1 === undefined) {
             console.log("nickname är undefined");
             throw new Error('Nickname saknas!');
         }
 
-        if(globalObject.playerOneColor===undefined){
+        if (color1 === undefined) {
             console.log("färg är undefined");
             throw new Error('Färg saknas!');
         }
-        
-        if(globalObject.playerOneNick.value.length < 3) {
+
+        if (nick1.length < 3) {
             console.log("nickname är för kort");
             throw new Error("Nickname skall vara minst tre tecken långt");
         }
 
-        if (globalObject.playerOneColor.value.length !== 7 ) {
+        if (color1.value.length !== 7) {
             console.log("färg är måste ha 7 tecken");
             throw new Error("Färg skall innehålla sju tecken");
         }
 
-        if (globalObject.playerOneColor.value === '#000000' || globalObject.playerOneColor.value === '#ffffff'){
+        if (color1.value === '#000000' || color1.value === '#ffffff') {
             console.log("färg får inte vara svart eller vit");
             throw new Error("Ogiltig färg!");
         }
 
-    }catch(oError) {
+    } catch (oError) {
         response.send(oError.message);
     }
 });
 
 
- 
