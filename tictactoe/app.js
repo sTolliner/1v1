@@ -18,7 +18,7 @@ app.use(cookieParser('secret'));
 
 app.get("/", function (request, response) {
 
-    if(request.cookies.nickName !== undefined || request.cookies.color !== undefined){
+    if(request.signedCookies.nickName !== undefined || request.signedCookies.color !== undefined){
         response.sendFile(__dirname + '/static/html/index.html', function(err, data){
             if( err ) {
                 console.log( err );
@@ -42,14 +42,17 @@ app.get("/", function (request, response) {
 app.get("/reset", function (request, response) {
     console.log(request.cookies);
 
-    if( request.cookies.nickName !== undefined && request.cookies.color !== undefined) {
+    if( request.signedCookies.nickName !== undefined && request.signedCookies.color !== undefined) {
 
-            //response.clearCookie('nickName');
-            //response.clearCookie('color');
-            response.set('nickname', {expires: Date.now()})
-            response.set('color', {expires: Date.now()})
+        response.clearCookie('nickName');
+        response.clearCookie('color');
+        console.log("kakor borta");
 
     } 
+    globalObject.playerOneColor = null;
+    globalObject.playerOneNick = null;
+    console.log(globalObject.playerOneColor);
+    console.log(globalObject.playerOneNick);
 
     response.redirect('/');
 });
@@ -90,13 +93,16 @@ app.post("/", function (request, response) {
 
         globalObject.playerOneNick = nick1;
         globalObject.playerOneColor = color1;
-
+        console.log(globalObject.playerOneColor);
+        console.log(globalObject.playerOneNick);
         
         if(globalObject.playerTwoNick === globalObject.playerOneNick){
-                throw new Error('Nickname redan taget!');
+            console.log("nickname är redan taget");
+            throw new Error('Nickname redan taget!');
         }
 
         if(globalObject.playerTwoColor === globalObject.playerOneColor){
+            console.log("färg är redan taget");
             throw new Error('Färg redan tagen!');
         } 
 
