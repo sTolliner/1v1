@@ -44,8 +44,11 @@ app.get("/reset", function (request, response) {
 
     if( request.cookies.nickName !== undefined && request.cookies.color !== undefined) {
 
-            response.clearCookie('nickName');
-            response.clearCookie('color');
+            //response.clearCookie('nickName');
+            //response.clearCookie('color');
+            response.set('nickname', {expires: Date.now()})
+            response.set('color', {expires: Date.now()})
+
     } 
 
     response.redirect('/');
