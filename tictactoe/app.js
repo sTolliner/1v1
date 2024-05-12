@@ -48,11 +48,12 @@ app.get("/reset", function (request, response) {
         response.clearCookie('color');
         console.log("kakor borta");
 
+        globalObject.playerOneColor = null;
+        globalObject.playerOneNick = null;
+        console.log(globalObject.playerOneColor);
+        console.log(globalObject.playerOneNick);
     } 
-    globalObject.playerOneColor = null;
-    globalObject.playerOneNick = null;
-    console.log(globalObject.playerOneColor);
-    console.log(globalObject.playerOneNick);
+    
 
     response.redirect('/');
 });
@@ -91,10 +92,20 @@ app.post("/", function (request, response) {
             throw new Error("Ogiltig färg!");
         }
 
-        globalObject.playerOneNick = nick1;
-        globalObject.playerOneColor = color1;
-        console.log(globalObject.playerOneColor);
-        console.log(globalObject.playerOneNick);
+        if(globalObject.playerOneNick == null) {
+            globalObject.playerOneNick = nick1;
+            globalObject.playerOneColor = color1;
+            console.log(globalObject.playerOneColor);
+            console.log(globalObject.playerOneNick);
+        }
+        else {
+            globalObject.playerTwoNick = nick1;
+            globalObject.playerTwoColor = color1;
+            console.log(globalObject.playerTwoNick);
+            console.log(globalObject.playerTwoColor);
+        }
+        
+        
         
         if(globalObject.playerTwoNick === globalObject.playerOneNick){
             console.log("nickname är redan taget");
@@ -106,8 +117,8 @@ app.post("/", function (request, response) {
             throw new Error('Färg redan tagen!');
         } 
 
-        response.cookie('nickName', nick1, {maxAge:1000*60*60*2, signed:true});
-        response.cookie('color', color1, {maxAge:1000*60*60*2, signed:true});
+        response.cookie('nickName', nick1, {maxAge:1000*60*60*2, signed:true, httpOnly: true});
+        response.cookie('color', color1, {maxAge:1000*60*60*2, signed:true, httpOnly: true});
         response.redirect('/');
 
     } 
