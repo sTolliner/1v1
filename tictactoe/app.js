@@ -166,7 +166,9 @@ io.on("connection", (socket)=>{
             else if(cookies.nickName == globalObject.playerTwoNick){
                 globalObject.playerTwoSocketId = socket.id;
                 globalObject.resetGameArea;
-                
+                socket.on("newGame", function(data) {
+                    io.emit("newGame", )
+                })
 
             }
             else{
