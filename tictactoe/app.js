@@ -161,23 +161,23 @@ io.on("connection", (socket)=>{
     if(cookies.nickName != undefined && cookies.color != undefined)
         {
             if(cookies.nickName == globalObject.playerOneNick){
-                globalObject.playerOneSocketId = socket.id
+                globalObject.playerOneSocketId = socket.id;
             }
             else if(cookies.nickName == globalObject.playerTwoNick){
-                globalObject.playerTwoSocketId = socket.id
-                globalObject.resetGameArea
+                globalObject.playerTwoSocketId = socket.id;
+                globalObject.resetGameArea;
                 
 
             }
             else{
                 io.on("disconnect", function() {
-                    console.ls("redan två spelare anslutna")
+                    console.log("redan två spelare anslutna");
                 });
             }
         }
         else{
             io.on("disconnect", function() {
-                console.log("inte kakor")
+                console.log("inte kakor");
             });
         }
 })
