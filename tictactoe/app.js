@@ -4,13 +4,14 @@
 const globalObject = require("./servermodules/game-modul.js");
 const fs = require('fs');
 const express = require('express');
+let app = express();
 const jsDOM = require('jsdom');
 const cookieParser = require('cookie-parser');
 const { disconnect } = require("process");
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
  
-let app = express();
+
 
 //app.listen(3000, function () {
 //    console.log(":3");
@@ -159,10 +160,10 @@ io.on("connection", (socket)=>{
 
     if(cookies.nickName != undefined && cookies.color != undefined)
         {
-            if(cookie.nickName == globalObject.playerOneNick){
+            if(cookies.nickName == globalObject.playerOneNick){
                 globalObject.playerOneSocketId = socket.id
             }
-            else if(cookie.nickName == globalObject.playerTwoNick){
+            else if(cookies.nickName == globalObject.playerTwoNick){
                 globalObject.playerTwoSocketId = socket.id
                 globalObject.resetGameArea
                 
