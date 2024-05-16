@@ -6,11 +6,17 @@ const fs = require('fs');
 const express = require('express');
 const jsDOM = require('jsdom');
 const cookieParser = require('cookie-parser');
-
+const { disconnect } = require("process");
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
+ 
 let app = express();
 
-app.listen(3000, function () {
-    console.log(":3");
+//app.listen(3000, function () {
+//    console.log(":3");
+//});
+let server = http.listen(3000, function() {
+    console.log(':3');
 });
 app.use("/static", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
@@ -145,5 +151,34 @@ app.post("/", function (request, response) {
     }
 
 });
+
+io.on("connection", (socket)=>{
+    let cookiestring = socket.handshake.headers.cookie;
+
+    let cookies = globalObject.cookieParser(cookiestring);
+
+    if(cookies.nickName != undefined && cookies.color != undefined)
+        {
+            if(cookie.nickName == globalObject.playerOneNick){
+                globalObject.playerOneSocketId = socket.id
+            }
+            else if(cookie.nickName == globalObject.playerTwoNick){
+                globalObject.playerTwoSocketId = socket.id
+                globalObject.resetGameArea
+                
+
+            }
+            else{
+                io.on("disconnect", function() {
+                    console.ls("redan två spelare anslutna")
+                });
+            }
+        }
+        else{
+            io.on("disconnect", function() {
+                console.log("inte kakor")
+            });
+        }
+})
 
 
