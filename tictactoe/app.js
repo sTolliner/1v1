@@ -21,11 +21,11 @@ let server = http.listen(3000, function() {
 });
 app.use("/public", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser('secret'));
+app.use(cookieParser());
 
 app.get("/", function (request, response) {
 
-    if(request.signedCookies.nickName !== undefined || request.signedCookies.color !== undefined){
+    if(request.cookies.nickName !== undefined || request.cookies.color !== undefined){
         response.sendFile(__dirname + '/static/html/index.html', function(err, data){
             if( err ) {
                 console.log( err );
@@ -49,7 +49,7 @@ app.get("/", function (request, response) {
 app.get("/reset", function (request, response) {
     console.log(request.cookies);
 
-    if( request.signedCookies.nickName !== undefined && request.signedCookies.color !== undefined) {
+    if( request.cookies.nickName !== undefined && request.cookies.color !== undefined) {
 
         response.clearCookie('nickName');
         response.clearCookie('color');
@@ -126,8 +126,8 @@ app.post("/", function (request, response) {
             throw new Error('Färg redan tagen!');
         } 
 
-        response.cookie('nickName', nick1, {maxAge:1000*60*60*2, signed:true, httpOnly: true});
-        response.cookie('color', color1, {maxAge:1000*60*60*2, signed:true, httpOnly: true});
+        response.cookie('nickName', nick1, {maxAge:1000*60*60*2, httpOnly: true});
+        response.cookie('color', color1, {maxAge:1000*60*60*2, httpOnly: true});
         response.redirect('/');
 
     } 
@@ -179,10 +179,13 @@ io.on("connection", (socket)=>{
                 globalObject.playerTwoColor = cookies.color;
                 globalObject.playerTwoSocketId = socket.id;
                 globalObject.resetGameArea;
+
+                socket.emit("newGame", {opponentNick: globalObject.playerTwoNick, opponentColor: globalObject.playerTwoColor, myColor: globalObject.playerOneColor});
+                /*
                 socket.on("newGame", function(data) {
                     io.emit("newGame", )
                 })
-
+                */
             }
             else{
                 console.log("finns redan 2 spelare");
