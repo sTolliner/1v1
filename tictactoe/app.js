@@ -19,7 +19,7 @@ const io = require('socket.io')(http);
 let server = http.listen(3000, function() {
     console.log(':3');
 });
-app.use("/static", express.static(__dirname + "/static"));
+app.use("/public", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser('secret'));
 
@@ -57,6 +57,8 @@ app.get("/reset", function (request, response) {
 
         globalObject.playerOneColor = null;
         globalObject.playerOneNick = null;
+        globalObject.playerTwoNick = null;
+        globalObject.playerTwoColor = null;
         console.log(globalObject.playerOneColor);
         console.log(globalObject.playerOneNick);
     } 
