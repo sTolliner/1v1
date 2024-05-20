@@ -166,14 +166,16 @@ io.on("connection", (socket)=>{
 
     if(cookies.nickName != undefined && cookies.color != undefined)
         {
+            console.log(globalObject.playerOneNick);
+            console.log(globalObject.playerTwoNick);
             console.log("cookies finns");
-            if(globalObject.playerOneNick == null){
+            if(globalObject.playerOneNick != null && globalObject.playerTwoNick == null){
                 console.log("player 1 connected");
                 globalObject.playerOneNick = cookies.nickName;
                 globalObject.playerOneColor = cookies.color;
                 globalObject.playerOneSocketId = socket.id;
             }
-            else if(globalObject.playerTwoNick == null && globalObject.playerOneNick != null){
+            else if(globalObject.playerTwoNick != null && globalObject.playerOneNick != null){
                 console.log("player 2 connected");
                 globalObject.playerTwoNick = cookies.nickName;
                 globalObject.playerTwoColor = cookies.color;
