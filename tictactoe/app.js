@@ -156,16 +156,27 @@ app.post("/", function (request, response) {
 });
 
 io.on("connection", (socket)=>{
+    console.log("connection");
+
     let cookiestring = socket.handshake.headers.cookie;
 
     let cookies = globalObject.parseCookies(cookiestring);
 
+    console.log(cookies);
+
     if(cookies.nickName != undefined && cookies.color != undefined)
         {
+            console.log("cookies finns");
             if(globalObject.playerOneNick == null){
+                console.log("player 1 connected");
+                globalObject.playerOneNick = cookies.nickName;
+                globalObject.playerOneColor = cookies.color;
                 globalObject.playerOneSocketId = socket.id;
             }
             else if(globalObject.playerTwoNick == null && globalObject.playerOneNick != null){
+                console.log("player 2 connected");
+                globalObject.playerTwoNick = cookies.nickName;
+                globalObject.playerTwoColor = cookies.color;
                 globalObject.playerTwoSocketId = socket.id;
                 globalObject.resetGameArea;
                 socket.on("newGame", function(data) {
@@ -174,12 +185,14 @@ io.on("connection", (socket)=>{
 
             }
             else{
+                console.log("finns redan 2 spelare");
                 io.on("disconnect", function() {
                     console.log("redan två spelare anslutna");
                 });
             }
         }
         else{
+            console.log("cookies finns inte");
             io.on("disconnect", function() {
                 console.log("inte kakor");
             });
