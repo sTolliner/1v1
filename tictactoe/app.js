@@ -158,14 +158,14 @@ app.post("/", function (request, response) {
 io.on("connection", (socket)=>{
     let cookiestring = socket.handshake.headers.cookie;
 
-    let cookies = globalObject.cookieParser(cookiestring);
+    let cookies = globalObject.parseCookies(cookiestring);
 
     if(cookies.nickName != undefined && cookies.color != undefined)
         {
-            if(cookies.nickName == globalObject.playerOneNick){
+            if(globalObject.playerOneNick == null){
                 globalObject.playerOneSocketId = socket.id;
             }
-            else if(cookies.nickName == globalObject.playerTwoNick){
+            else if(globalObject.playerTwoNick == null && globalObject.playerOneNick != null){
                 globalObject.playerTwoSocketId = socket.id;
                 globalObject.resetGameArea;
                 socket.on("newGame", function(data) {
