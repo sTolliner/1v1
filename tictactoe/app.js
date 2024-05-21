@@ -162,26 +162,33 @@ io.on("connection", (socket)=>{
 
     let cookies = globalObject.parseCookies(cookiestring);
 
-    console.log(cookies);
+    //console.log(cookies);
 
     if(cookies.nickName != undefined && cookies.color != undefined)
         {
-            console.log(globalObject.playerOneNick);
-            console.log(globalObject.playerTwoNick);
+            console.log(globalObject.playerOneNick, globalObject.playerTwoNick);
             console.log("cookies finns");
-            if(globalObject.playerOneNick != null && globalObject.playerTwoNick == null){
+            if(io.engine.clientsCount == 1){
                 console.log("player 1 connected");
                 globalObject.playerOneNick = cookies.nickName;
                 globalObject.playerOneColor = cookies.color;
                 globalObject.playerOneSocketId = socket.id;
+
+                console.log("socket p1", globalObject.playerOneSocketId);
+                console.log("cookies p1", cookies);
             }
-            else if(globalObject.playerTwoNick != null && globalObject.playerOneNick != null){
+            else if(io.engine.clientsCount == 2){
                 console.log("player 2 connected");
                 globalObject.playerTwoNick = cookies.nickName;
                 globalObject.playerTwoColor = cookies.color;
                 globalObject.playerTwoSocketId = socket.id;
-                globalObject.resetGameArea;
 
+                console.log("socket p2", globalObject.playerTwoSocketId);
+                console.log("cookies p2", cookies);
+
+                globalObject.resetGameArea;
+                console.log(io.engine.clientsCount);
+                console.log("Båda spelare connected", globalObject.playerOneNick, globalObject.playerTwoNick);
                 socket.emit("newGame", {opponentNick: globalObject.playerTwoNick, opponentColor: globalObject.playerTwoColor, myColor: globalObject.playerOneColor});
                 /*
                 socket.on("newGame", function(data) {
