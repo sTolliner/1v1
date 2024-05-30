@@ -7,7 +7,6 @@ const express = require('express');
 let app = express();
 const jsDOM = require('jsdom');
 const cookieParser = require('cookie-parser');
-const { disconnect } = require("process");
 const http = require('http').createServer(app);
 const io = require('socket.io')(http);
 
@@ -166,7 +165,7 @@ io.on("connection", (socket) => {
 
     if (cookies.nickName != undefined && cookies.color != undefined) {
         console.log(globalObject.playerOneNick, globalObject.playerTwoNick);
-        console.log("cookies finns");
+        console.log("cookies finns", cookies.nickName, cookies.color);
         if (io.engine.clientsCount == 1) {
             console.log("player 1 connected");
             globalObject.playerOneNick = cookies.nickName;
@@ -194,56 +193,54 @@ io.on("connection", (socket) => {
 
             globalObject.currentPlayer = 1;
 
-            io.to(globalObject.playerOneSocketId).emit("yourMove", { "cellId": "null" });
-
+            io.to(globalObject.playerOneSocketId).emit("yourMove", {"cellId": null});
             console.log("yourmove to p1");
-            socket.on("newMove", (data) => {
-                console.log("inne i newGame");
-                globalObject.gameArea[data.cellId] = globalObject.currentPlayer;
 
-                if (globalObject.currentPlayer == 1) {
-                    console.log("cuurent player 1");
-                    globalObject.currentPlayer = 2;
-                    io.to(globalObject.playerTwoSocketId).emit("yourMove", { "cellId": data.cellId })
-
-                }
-                else {
-                    console.log("current player 2");
-                    globalObject.currentPlayer = 1;
-                    io.to(globalObject.playerOneSocketId).emit("yourMove", { "cellId": data.cellId });
-
-                }
-
-                let answer = globalObject.checkForWinner();
-
-                if (answer != 0) {
-                    if (answer = 1) {
-                        io.emit("gameover", "Vinnaren är " + globalObject.playerOneNick);
-                    }
-                    else if (answer = 2) {
-                        io.emit("gameover", "Vinnaren är " + globalObject.playerTwoNick);
-                    }
-                    else if (answer = 3) {
-                        io.emit("gameover", "Det blev oavgjort");
-                    }
-                }
-
-            });
+            
 
         }
         else {
             console.log("finns redan 2 spelare");
-            io.on("disconnect", function () {
-                console.log("redan två spelare anslutna");
-            });
+            socket.disconnect();
         }
     }
     else {
         console.log("cookies finns inte");
-        io.on("disconnect", function () {
-            console.log("inte kakor");
-        });
+        socket.disconnect();
     }
+
+    socket.on("newMove", (data) => {
+        console.log("inne i newmove");
+        globalObject.gameArea[data.cellId] = globalObject.currentPlayer;
+
+        if (globalObject.currentPlayer == 1) {
+            console.log("cuurent player 1");
+            globalObject.currentPlayer = 2;
+            io.to(globalObject.playerTwoSocketId).emit("yourMove", { "cellId": data.cellId })
+
+        }
+        else {
+            console.log("current player 2");
+            globalObject.currentPlayer = 1;
+            io.to(globalObject.playerOneSocketId).emit("yourMove", { "cellId": data.cellId });
+
+        }
+
+        let answer = globalObject.checkForWinner();
+
+        if (answer != 0) {
+            if (answer = 1) {
+                io.emit("gameover", "Vinnaren är " + globalObject.playerOneNick);
+            }
+            else if (answer = 2) {
+                io.emit("gameover", "Vinnaren är " + globalObject.playerTwoNick);
+            }
+            else if (answer = 3) {
+                io.emit("gameover", "Det blev oavgjort");
+            }
+        }
+
+    });
 })
 
 
