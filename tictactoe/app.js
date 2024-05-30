@@ -193,7 +193,7 @@ io.on("connection", (socket) => {
 
             globalObject.currentPlayer = 1;
 
-            io.to(globalObject.playerOneSocketId).emit("yourMove", {"cellId": null});
+            io.to(globalObject.playerOneSocketId).emit("yourMove", null);
             console.log("yourmove to p1");
 
             
@@ -223,11 +223,11 @@ io.on("connection", (socket) => {
             console.log("current player 2");
             globalObject.currentPlayer = 1;
             io.to(globalObject.playerOneSocketId).emit("yourMove", { "cellId": data.cellId });
-
+            
         }
-
+        /*
         let answer = globalObject.checkForWinner();
-
+        console.log(answer);
         if (answer != 0) {
             if (answer = 1) {
                 io.emit("gameover", "Vinnaren är " + globalObject.playerOneNick);
@@ -239,7 +239,7 @@ io.on("connection", (socket) => {
                 io.emit("gameover", "Det blev oavgjort");
             }
         }
-
+        */
     });
 })
 
