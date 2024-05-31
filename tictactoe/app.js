@@ -194,6 +194,8 @@ io.on("connection", (socket) => {
             globalObject.currentPlayer = 1;
 
             io.to(globalObject.playerOneSocketId).emit("yourMove", null);
+            globalObject.timerId = setInterval(timeout, 5000);
+
             console.log("yourmove to p1");
 
             
@@ -211,6 +213,11 @@ io.on("connection", (socket) => {
 
     socket.on("newMove", (data) => {
         console.log("inne i newmove");
+
+        clearInterval(globalObject.timerId);
+        globalObject.timerId = setInterval(timeout, 5000);
+        
+
         globalObject.gameArea[data.cellId] = globalObject.currentPlayer;
         
         if (globalObject.currentPlayer == 1) {
@@ -243,5 +250,20 @@ io.on("connection", (socket) => {
     });
 })
 
+function timeout() {
+    if(globalObject.currentPlayer == 1) {
 
+        io.to(globalObject.playerOneSocketId).emit("timeout");
+        io.to(globalObject.playerTwoSocketId).emit("yourMove", null);
+        globalObject.currentPlayer = 2;
+
+    }
+    else {
+
+        io.to(globalObject.playerTwoSocketId).emit("timeout");
+        io.to(globalObject.playerOneSocketId).emit("yourMove", null);
+        globalObject.currentPlayer = 1;
+
+    }
+}
 
