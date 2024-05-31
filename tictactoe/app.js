@@ -22,6 +22,7 @@ app.use("/public", express.static(__dirname + "/static"));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+//kollar om det finns kakor, skickar då till index annars loggain
 app.get("/", function (request, response) {
 
     if (request.cookies.nickName !== undefined || request.cookies.color !== undefined) {
@@ -45,6 +46,7 @@ app.get("/", function (request, response) {
     }
 });
 
+//resettar kakor och attribut i globalobject
 app.get("/reset", function (request, response) {
     console.log(request.cookies);
 
@@ -66,6 +68,7 @@ app.get("/reset", function (request, response) {
     response.redirect('/');
 });
 
+//kollar om nickname och color uppfyller krav för att få spela
 app.post("/", function (request, response) {
     try {
 
@@ -154,6 +157,7 @@ app.post("/", function (request, response) {
 
 });
 
+//kollar om spelare har anslutit till servern
 io.on("connection", (socket) => {
     console.log("connection");
 
@@ -162,7 +166,7 @@ io.on("connection", (socket) => {
     let cookies = globalObject.parseCookies(cookiestring);
 
     //console.log(cookies);
-
+    //kollar om cookies finns
     if (cookies.nickName != undefined && cookies.color != undefined) {
         console.log(globalObject.playerOneNick, globalObject.playerTwoNick);
         console.log("cookies finns", cookies.nickName, cookies.color);
@@ -183,16 +187,16 @@ io.on("connection", (socket) => {
 
             console.log("socket p2", globalObject.playerTwoSocketId);
             console.log("cookies p2", cookies);
-
+            //återställer spelplanen
             globalObject.resetGameArea();
             console.log(io.engine.clientsCount);
             console.log("Båda spelare connected", globalObject.playerOneNick, globalObject.playerTwoNick);
-
+            //startar nytt spel
             io.to(globalObject.playerOneSocketId).emit("newGame", { opponentNick: globalObject.playerTwoNick, opponentColor: globalObject.playerTwoColor, myColor: globalObject.playerOneColor });
             io.to(globalObject.playerTwoSocketId).emit("newGame", { opponentNick: globalObject.playerOneNick, opponentColor: globalObject.playerOneColor, myColor: globalObject.playerTwoColor });
 
             globalObject.currentPlayer = 1;
-
+            //startar timern och gör så spelare ett börjar
             io.to(globalObject.playerOneSocketId).emit("yourMove", null);
             globalObject.timerId = setInterval(timeout, 5000);
 
@@ -210,7 +214,7 @@ io.on("connection", (socket) => {
         console.log("cookies finns inte");
         socket.disconnect();
     }
-
+    //vid drag av spelare starta timer och byt spelare
     socket.on("newMove", (data) => {
         console.log("inne i newmove");
 
@@ -232,7 +236,7 @@ io.on("connection", (socket) => {
             io.to(globalObject.playerOneSocketId).emit("yourMove", { "cellId": data.cellId });
             
         }
-        
+        //kollar om en vinnare finns och vem det är isåfall
         let answer = globalObject.checkForWinner();
         
         if (answer != 0) {
@@ -249,7 +253,7 @@ io.on("connection", (socket) => {
         
     });
 })
-
+//byter spelare om tiden går ut
 function timeout() {
     if(globalObject.currentPlayer == 1) {
 
