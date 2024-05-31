@@ -184,7 +184,7 @@ io.on("connection", (socket) => {
             console.log("socket p2", globalObject.playerTwoSocketId);
             console.log("cookies p2", cookies);
 
-            globalObject.resetGameArea;
+            globalObject.resetGameArea();
             console.log(io.engine.clientsCount);
             console.log("Båda spelare connected", globalObject.playerOneNick, globalObject.playerTwoNick);
 
@@ -212,7 +212,7 @@ io.on("connection", (socket) => {
     socket.on("newMove", (data) => {
         console.log("inne i newmove");
         globalObject.gameArea[data.cellId] = globalObject.currentPlayer;
-
+        
         if (globalObject.currentPlayer == 1) {
             console.log("cuurent player 1");
             globalObject.currentPlayer = 2;
@@ -225,9 +225,9 @@ io.on("connection", (socket) => {
             io.to(globalObject.playerOneSocketId).emit("yourMove", { "cellId": data.cellId });
             
         }
-        /*
+        
         let answer = globalObject.checkForWinner();
-        console.log(answer);
+        
         if (answer != 0) {
             if (answer = 1) {
                 io.emit("gameover", "Vinnaren är " + globalObject.playerOneNick);
@@ -239,7 +239,7 @@ io.on("connection", (socket) => {
                 io.emit("gameover", "Det blev oavgjort");
             }
         }
-        */
+        
     });
 })
 
